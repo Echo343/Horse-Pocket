@@ -1,0 +1,37 @@
+{
+    "parent": "blargsworkshop:root",
+    "display": {
+        "icon": {
+            "item": "horsepocket:pocket"
+        },
+        "title": {
+            "translate": "advancements.horsepocket.acquire_horsepocket.title"
+        },
+        "description": {
+            "translate": "advancements.horsepocket.acquire_horsepocket.description"
+        },
+        "frame": "task",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "acquire_horsepocket": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                        	"horsepocket:pocket"
+                    	]
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        [
+            "acquire_horsepocket"
+        ]
+    ]
+}

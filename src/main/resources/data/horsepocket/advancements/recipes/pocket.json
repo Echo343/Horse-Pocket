@@ -1,0 +1,47 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "horsepocket:pocket"
+    ]
+  },
+  "criteria": {
+    "has_main_ingredients": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+            	"minecraft:leather"
+        	]
+          }
+        ]
+      }
+    },
+    "has_itself": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+            	"horsepocket:pocket"
+        	]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "horsepocket:pocket"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_main_ingredients",
+      "has_itself",
+      "has_the_recipe"
+    ]
+  ]
+}

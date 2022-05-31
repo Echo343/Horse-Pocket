@@ -1,0 +1,14 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "horsepocket:items/pocket"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "horsepocket:stowed": 1
+            },
+            "model": "horsepocket:item/pocket2"
+        }
+    ]
+}

@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "   ",
+        "lll",
+        "   "
+    ],
+    "key": {
+        "l": {
+                "item": "minecraft:leather"
+		}
+    },
+    "result": {
+        "item": "horsepocket:pocket",
+        "count": 1
+    }
+}
