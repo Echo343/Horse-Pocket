@@ -7,17 +7,19 @@ import com.blargsworkshop.horsepocket.HorsePocket;
 import com.blargsworkshop.horsepocket.item.PocketItem;
 
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid="horsepocket")
-public class PocketProvider implements ICapabilityProvider {
+public class PocketProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 	
 	private static final ResourceLocation IDENTIFIER = new ResourceLocation(HorsePocket.MOD_ID, "pocket_capability");
 	
@@ -40,6 +42,16 @@ public class PocketProvider implements ICapabilityProvider {
 			event.addCapability(PocketProvider.IDENTIFIER, provider);
 			event.addListener(provider::invalidate);
 		}
+	}
+
+	@Override
+	public CompoundTag serializeNBT() {
+		return this.backend.serializeNBT();
+	}
+
+	@Override
+	public void deserializeNBT(CompoundTag nbt) {
+		this.backend.deserializeNBT(nbt);
 	}
 
 }
