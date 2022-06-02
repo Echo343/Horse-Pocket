@@ -3,7 +3,6 @@ package com.blargsworkshop.horsepocket.item;
 import com.blargsworkshop.common.text.Chat;
 import com.blargsworkshop.common.utility.WorldHelper;
 import com.blargsworkshop.horsepocket.HorsePocket;
-import com.blargsworkshop.horsepocket.capability.PocketCapability;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -19,13 +18,5 @@ public class PocketItem extends Item {
 	}
 	
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
-		ItemStack stack = playerIn.getItemInHand(handIn);
-		stack.getCapability(PocketCapability.INSTANCE).ifPresent((pocket) -> {
-			pocket.setTestFlag(!pocket.getTestFlag());
-			Chat.addUnlocalizedChatMessage(playerIn, (WorldHelper.isClient(worldIn) ? "client:" : "server:") + "getTestFlag(" + pocket.getTestFlag() + ")");
-		});
-		return InteractionResultHolder.pass(stack);
-	}
 
 }
