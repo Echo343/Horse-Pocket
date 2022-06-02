@@ -14,6 +14,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -48,14 +50,19 @@ public class PocketItem extends Item {
                     living.setPos(pos.getX() + 0.5, pos.getY() + 0.01, pos.getZ() + 0.5);
                     context.getLevel().addFreshEntity(living);
                     compound.putBoolean("has_entity", false);
+                    
     	            if (context.getPlayer().level.isClientSide) {
-    	            	if (compound.getString("entity_type").equalsIgnoreCase("minecraft:horse")) {
+    	            	if (compound.getBoolean("has_custom_name")) {
+    	            		MutableComponent entityName = Component.Serializer.fromJson(compound.getString("entity_name"));
+    	            		Chat.addUnlocalizedChatMessage(context.getPlayer(), "Released " + entityName.getString());
+    	            	} else if (compound.getString("entity_type").equalsIgnoreCase("minecraft:horse")) {
 	    	            	int variant = compound.getCompound("entity_data").getInt("Variant");
-	    	            	Chat.addUnlocalizedChatMessage(context.getPlayer(), "Released " + Variants.INSTANCE.getUsageWordingByIndex(variant));
+	    	            	Chat.addUnlocalizedChatMessage(context.getPlayer(), "Released " + Variants.INSTANCE.getDescriptionByVariant(variant));
     	            	} else {
     	            		Chat.addUnlocalizedChatMessage(context.getPlayer(), "Released a " + living.getType().getRegistryName().getPath());
     	            	}
     	            }
+    	            
                     return InteractionResult.sidedSuccess(context.getPlayer().level.isClientSide);
                 }
             }
@@ -74,20 +81,24 @@ public class PocketItem extends Item {
         		living.ejectPassengers();
 
 	            compound.putString("entity_type", living.getType().getRegistryName().toString());
+	            compound.putString("entity_display_name", living.getType().toShortString());
 	            compound.put("entity_data", living.saveWithoutId(new CompoundTag()));
+	            compound.putBoolean("has_custom_name", living.hasCustomName());
 	            compound.putString("entity_name", Component.Serializer.toJson(living.hasCustomName() ? living.getCustomName() : living.getDisplayName()));
 	            compound.putBoolean("has_entity", true);
-	            living.remove(Entity.RemovalReason.UNLOADED_TO_CHUNK);
 	
 	            if (player.level.isClientSide) {
-	            	if (compound.getString("entity_type").equalsIgnoreCase("minecraft:horse")) {
+	            	if (living.hasCustomName()) {
+	            		Chat.addUnlocalizedChatMessage(player, "Stowed " + living.getCustomName().getString());
+	            	} else if (compound.getString("entity_type").equalsIgnoreCase("minecraft:horse")) {
 		            	int variant = compound.getCompound("entity_data").getInt("Variant");
-		            	Chat.addUnlocalizedChatMessage(player, "Stowed " + Variants.INSTANCE.getUsageWordingByIndex(variant));
+		            	Chat.addUnlocalizedChatMessage(player, "Stowed " + Variants.INSTANCE.getDescriptionByVariant(variant));
 	            	} else {
 	            		Chat.addUnlocalizedChatMessage(player, "Stowed a " + living.getType().getRegistryName().getPath());
 	            	}
 	            }
 	            
+	            living.remove(Entity.RemovalReason.UNLOADED_TO_CHUNK);
 	            player.setItemInHand(hand, stack);
 	            return InteractionResult.sidedSuccess(player.level.isClientSide);
         	}
@@ -100,14 +111,17 @@ public class PocketItem extends Item {
         CompoundTag compound = stack.getOrCreateTag();
         if (compound.getBoolean("has_entity")) {
         	MutableComponent entityName = Component.Serializer.fromJson(compound.getString("entity_name"));
+        	if (compound.getBoolean("has_custom_name")) {
+        		entityName.append(" (" + compound.getString("entity_display_name") + ")");
+        	}
         	switch (compound.getString("entity_type").toLowerCase()) {
         		case "minecraft:horse":
-        			components.add(new TextComponent(entityName.getString()).withStyle(ChatFormatting.DARK_AQUA));
+        			components.add(new TextComponent(entityName.getString()).withStyle(Style.EMPTY.withColor(TextColor.parseColor("#7A4B1C"))));
         			int variant = compound.getCompound("entity_data").getInt("Variant");
-        			components.add(new TextComponent(Variants.INSTANCE.getNameByIndex(variant)).withStyle(ChatFormatting.DARK_AQUA));
+        			components.add(new TextComponent(Variants.INSTANCE.getDescriptionByVariant(variant)).withStyle(Style.EMPTY.withColor(TextColor.parseColor("#7A4B1C"))));
         			break;
         		case "minecraft:pig":
-        			components.add(new TextComponent(entityName.getString()).withStyle(ChatFormatting.LIGHT_PURPLE));
+        			components.add(new TextComponent(entityName.getString()).withStyle(Style.EMPTY.withColor(TextColor.parseColor("#ffc0cb"))));
         			break;
         		case "minecraft:strider":
         			components.add(new TextComponent(entityName.getString()).withStyle(ChatFormatting.DARK_RED));
