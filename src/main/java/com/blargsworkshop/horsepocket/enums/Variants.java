@@ -11,45 +11,45 @@ public enum Variants {
 	private Map<Integer, String> vars = new HashMap<>();
 		
 	Variants() {
-		vars.put(0, "a White horse");
-		vars.put(1, "a Creamy horse");
-		vars.put(2, "a Chestnut horse");
-		vars.put(3, "a Brown horse");
-		vars.put(4, "a Black horse");
-		vars.put(5, "a Gray horse");
-		vars.put(6, "a Dark Brown horse");
+		vars.put(0, "A White horse");
+		vars.put(1, "A Creamy horse");
+		vars.put(2, "A Chestnut horse");
+		vars.put(3, "A Brown horse");
+		vars.put(4, "A Black horse");
+		vars.put(5, "A Gray horse");
+		vars.put(6, "A Dark Brown horse");
 
-		vars.put(256, "a White horse");
-		vars.put(257, "a Creamy horse with white accents");
-		vars.put(258, "a Chestnut horse with white accents");
-		vars.put(259, "a Brown horse with white accents");
-		vars.put(260, "a Black horse with white accents");
-		vars.put(261, "a Gray horse with white accents");
-		vars.put(262, "a Dark Brown horse with white accents");
+		vars.put(256, "A White horse");
+		vars.put(257, "A Creamy horse with white accents");
+		vars.put(258, "A Chestnut horse with white accents");
+		vars.put(259, "A Brown horse with white accents");
+		vars.put(260, "A Black horse with white accents");
+		vars.put(261, "A Gray horse with white accents");
+		vars.put(262, "A Dark Brown horse with white accents");
 
-		vars.put(512, "a White horse");
-		vars.put(513, "a Creamy horse with white fields");
-		vars.put(514, "a Chestnut horse with white fields");
-		vars.put(515, "a Brown horse with white fields");
-		vars.put(516, "a Black horse with white fields");
-		vars.put(517, "a Gray horse with white fields");
-		vars.put(518, "a Dark Brown horse with white fields");
+		vars.put(512, "A White horse");
+		vars.put(513, "A Creamy horse with white fields");
+		vars.put(514, "A Chestnut horse with white fields");
+		vars.put(515, "A Brown horse with white fields");
+		vars.put(516, "A Black horse with white fields");
+		vars.put(517, "A Gray horse with white fields");
+		vars.put(518, "A Dark Brown horse with white fields");
 
-		vars.put(768, "a White horse");
-		vars.put(769, "a Creamy horse with white dots");
-		vars.put(770, "a Chestnut horse with white dots");
-		vars.put(771, "a Brown horse with white dots");
-		vars.put(772, "a Black horse with white dots");
-		vars.put(773, "a Gray horse with white dots");
-		vars.put(774, "a Dark Brown horse with white dots");
+		vars.put(768, "A White horse");
+		vars.put(769, "A Creamy horse with white dots");
+		vars.put(770, "A Chestnut horse with white dots");
+		vars.put(771, "A Brown horse with white dots");
+		vars.put(772, "A Black horse with white dots");
+		vars.put(773, "A Gray horse with white dots");
+		vars.put(774, "A Dark Brown horse with white dots");
 
-		vars.put(1024, "a White horse with black dots");
-		vars.put(1025, "a Creamy horse with black dots");
-		vars.put(1026, "a Chestnut horse with black dots");
-		vars.put(1027, "a Brown horse with black dots");
-		vars.put(1028, "a Black horse");
-		vars.put(1029, "a Gray horse with black dots");
-		vars.put(1030, "a Dark Brown horse with black dots");
+		vars.put(1024, "A White horse with black dots");
+		vars.put(1025, "A Creamy horse with black dots");
+		vars.put(1026, "A Chestnut horse with black dots");
+		vars.put(1027, "A Brown horse with black dots");
+		vars.put(1028, "A Black horse");
+		vars.put(1029, "A Gray horse with black dots");
+		vars.put(1030, "A Dark Brown horse with black dots");
 	}
 	
 	public String getDescriptionByVariant(@NotNull Integer index) {

@@ -28,10 +28,14 @@ import net.minecraft.world.level.Level;
 
 public class PocketItem extends Item {
 
+
 	public static class Tag {
-		public static final String ENTITY_DATA = "entity_data";
-		public static final String ENTITY_TYPE = "entity_type";
 		public static final String HAS_ENTITY = "has_entity";
+		public static final String ENTITY_TYPE = "entity_type";
+		public static final String ENTITY_DATA = "entity_data";
+		public static final String HAS_CUSTOM_NAME = "has_custom_name";
+		public static final String CUSTOM_NAME = "entity_custom_name";
+		public static final String TYPE_NAME = "entity_type_description";
 	}
 
 	private static final String MINECRAFT_HORSE = "minecraft:horse";
@@ -46,27 +50,29 @@ public class PocketItem extends Item {
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
 		CompoundTag compound = context.getItemInHand().getOrCreateTag();
+		
 		if (compound.getBoolean(Tag.HAS_ENTITY)) {
 			Optional<EntityType<?>> optional = EntityType.byString(compound.getString(Tag.ENTITY_TYPE));
+			
 			if (optional.isPresent()) {
-				Entity living = optional.get().create(context.getLevel());
-				if (living != null) {
-					living.load(compound.getCompound(Tag.ENTITY_DATA));
+				Entity entity = optional.get().create(context.getLevel());
+				
+				if (entity != null) {
+					entity.load(compound.getCompound(Tag.ENTITY_DATA));
 					// TODO top of block only?
 					BlockPos pos = context.getClickedPos().relative(context.getClickedFace());
-					living.setPos(pos.getX() + 0.5, pos.getY() + 0.01, pos.getZ() + 0.5);
-					context.getLevel().addFreshEntity(living);
+					entity.setPos(pos.getX() + 0.5, pos.getY() + 0.01, pos.getZ() + 0.5);
+					context.getLevel().addFreshEntity(entity);
 					compound.putBoolean(Tag.HAS_ENTITY, false);
 
 					if (context.getPlayer().level.isClientSide) {
-						if (compound.getBoolean("has_custom_name")) {
-							MutableComponent entityName = Component.Serializer.fromJson(compound.getString("entity_name"));
-							Chat.addUnlocalizedChatMessage(context.getPlayer(), "Released " + entityName.getString());
-						} else if (compound.getString(Tag.ENTITY_TYPE).equalsIgnoreCase(MINECRAFT_HORSE)) {
+						if (entity.hasCustomName()) {
+							Chat.addUnlocalizedChatMessage(context.getPlayer(), "Released " + entity.getCustomName().getString());
+						} else if (entity.getType().getRegistryName().toString().equalsIgnoreCase(MINECRAFT_HORSE)) {
 							int variant = compound.getCompound(Tag.ENTITY_DATA).getInt(VARIANT);
-							Chat.addUnlocalizedChatMessage(context.getPlayer(), "Released " + Variants.INSTANCE.getDescriptionByVariant(variant));
+							Chat.addUnlocalizedChatMessage(context.getPlayer(), "Released " + Variants.INSTANCE.getDescriptionByVariant(variant).toLowerCase());
 						} else {
-							Chat.addUnlocalizedChatMessage(context.getPlayer(), "Released a " + living.getType().getRegistryName().getPath());
+							Chat.addUnlocalizedChatMessage(context.getPlayer(), "Released a " + entity.getType().getRegistryName().getPath());
 						}
 					}
 
@@ -80,25 +86,36 @@ public class PocketItem extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> components, TooltipFlag flag) {
 		CompoundTag compound = stack.getOrCreateTag();
+		
 		if (compound.getBoolean(Tag.HAS_ENTITY)) {
-			MutableComponent entityName = Component.Serializer.fromJson(compound.getString("entity_name"));
-			if (compound.getBoolean("has_custom_name")) {
-				entityName.append(" (" + compound.getString("entity_display_name") + ")");
+			MutableComponent entityName = null;
+			
+			if (compound.getBoolean(Tag.HAS_CUSTOM_NAME)) {
+				entityName = new TextComponent(compound.getString(Tag.CUSTOM_NAME));
+				entityName.append(" (" + compound.getString(Tag.TYPE_NAME) + ")");
+				
+			} else if (compound.getString(Tag.ENTITY_TYPE).equalsIgnoreCase(MINECRAFT_HORSE)) {
+				int variant = compound.getCompound(Tag.ENTITY_DATA).getInt(VARIANT);
+				entityName = new TextComponent(Variants.INSTANCE.getDescriptionByVariant(variant));
+				
+			} else {
+				entityName = new TextComponent(compound.getString(Tag.TYPE_NAME));
 			}
+			
+			// Adjust Color
 			switch (compound.getString(Tag.ENTITY_TYPE).toLowerCase()) {
 				case MINECRAFT_HORSE:
-					components.add(new TextComponent(entityName.getString()).withStyle(ChatFormatting.YELLOW));
-					int variant = compound.getCompound(Tag.ENTITY_DATA).getInt(VARIANT);
-					components.add(new TextComponent(Variants.INSTANCE.getDescriptionByVariant(variant)).withStyle(ChatFormatting.YELLOW));
+					components.add(entityName.withStyle(ChatFormatting.DARK_GREEN));
 					break;
 				case MINECRAFT_PIG:
-					components.add(new TextComponent(entityName.getString()).withStyle(Style.EMPTY.withColor(TextColor.parseColor("#ffc0cb"))));
+					// Pink
+					components.add(entityName.withStyle(Style.EMPTY.withColor(TextColor.parseColor("#ffc0cb"))));
 					break;
 				case MINECRAFT_STRIDER:
-					components.add(new TextComponent(entityName.getString()).withStyle(ChatFormatting.DARK_RED));
+					components.add(entityName.withStyle(ChatFormatting.DARK_RED));
 					break;
 				default:
-					components.add(new TextComponent(entityName.getString()).withStyle(ChatFormatting.AQUA));
+					components.add(entityName.withStyle(ChatFormatting.YELLOW));
 					break;
 			}
 		}

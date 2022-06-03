@@ -5,7 +5,6 @@ import com.blargsworkshop.horsepocket.enums.Variants;
 import com.blargsworkshop.horsepocket.item.PocketItem;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Saddleable;
@@ -37,22 +36,24 @@ public class InteractionEventHandler {
 						entity.stopRiding();
 					}
 					entity.ejectPassengers();
-
-					compound.putString(PocketItem.Tag.ENTITY_TYPE, entity.getType().getRegistryName().toString());
-					compound.putString("entity_display_name", entity.getType().toShortString());
-					compound.put(PocketItem.Tag.ENTITY_DATA, entity.saveWithoutId(new CompoundTag()));
-					compound.putBoolean("has_custom_name", entity.hasCustomName());
-					compound.putString("entity_name", Component.Serializer.toJson(entity.hasCustomName() ? entity.getCustomName() : entity.getDisplayName()));
+					
 					compound.putBoolean(PocketItem.Tag.HAS_ENTITY, true);
+					compound.putString(PocketItem.Tag.ENTITY_TYPE, entity.getType().getRegistryName().toString());
+					compound.put(PocketItem.Tag.ENTITY_DATA, entity.saveWithoutId(new CompoundTag()));
+					compound.putString(PocketItem.Tag.TYPE_NAME, entity.getType().getDescription().getString());
+					compound.putBoolean(PocketItem.Tag.HAS_CUSTOM_NAME, entity.hasCustomName());
+					if (entity.hasCustomName()) {
+						compound.putString(PocketItem.Tag.CUSTOM_NAME, entity.getCustomName().getString());
+					}
 
 					if (player.level.isClientSide) {
 						if (entity.hasCustomName()) {
 							Chat.addUnlocalizedChatMessage(player, "Stowed " + entity.getCustomName().getString());
-						} else if (compound.getString(PocketItem.Tag.ENTITY_TYPE).equalsIgnoreCase(MINECRAFT_HORSE)) {
+						} else if (entity.getType().getRegistryName().toString().equalsIgnoreCase(MINECRAFT_HORSE)) {
 							int variant = compound.getCompound(PocketItem.Tag.ENTITY_DATA).getInt(VARIANT);
-							Chat.addUnlocalizedChatMessage(player, "Stowed " + Variants.INSTANCE.getDescriptionByVariant(variant));
+							Chat.addUnlocalizedChatMessage(player, "Stowed " + Variants.INSTANCE.getDescriptionByVariant(variant).toLowerCase());
 						} else {
-							Chat.addUnlocalizedChatMessage(player, "Stowed a " + entity.getType().getRegistryName().getPath());
+							Chat.addUnlocalizedChatMessage(player, "Stowed a " + entity.getType().getDescription().getString().toLowerCase());
 						}
 					}
 
