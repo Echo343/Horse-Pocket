@@ -8,7 +8,8 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 
 public class Chat {
-
+	// TODO overload to take Components
+	
 	public static void addChatMessage(Player player, String messageKey, Object... args) {
 		player.sendMessage(new TranslatableComponent(messageKey, args), player.getUUID());
 	}

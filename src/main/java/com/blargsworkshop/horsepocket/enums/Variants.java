@@ -1,4 +1,4 @@
-package com.blargsworkshop.horsepocket.horse;
+package com.blargsworkshop.horsepocket.enums;
 
 import java.util.HashMap;
 import java.util.Map;
