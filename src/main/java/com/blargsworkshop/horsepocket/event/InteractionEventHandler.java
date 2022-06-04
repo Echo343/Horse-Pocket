@@ -1,6 +1,6 @@
 package com.blargsworkshop.horsepocket.event;
 
-import com.blargsworkshop.common.text.Chat;
+import com.blargsworkshop.horsepocket.common.text.Chat;
 import com.blargsworkshop.horsepocket.enums.Variants;
 import com.blargsworkshop.horsepocket.item.PocketItem;
 

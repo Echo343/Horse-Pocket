@@ -1,4 +1,4 @@
-package com.blargsworkshop.common.sound;
+package com.blargsworkshop.horsepocket.common.sound;
 
 import javax.annotation.Nonnull;
 

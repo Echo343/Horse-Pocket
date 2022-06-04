@@ -5,8 +5,8 @@ import java.util.Optional;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.blargsworkshop.common.text.Chat;
 import com.blargsworkshop.horsepocket.HorsePocket;
+import com.blargsworkshop.horsepocket.common.text.Chat;
 import com.blargsworkshop.horsepocket.enums.Variants;
 
 import net.minecraft.ChatFormatting;
