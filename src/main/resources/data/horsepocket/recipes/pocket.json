@@ -1,19 +1,24 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        "###",
-        "LHL",
+        "FFF",
+        "LJL",
         " L "
     ],
     "key": {
-        "#": {
-            "item": "minecraft:string"
-        },
+        "F": [
+			{
+				"item": "minecraft:carrot"
+			},
+			{
+				"item": "minecraft:hay_block"
+			}
+		],
         "L": {
             "item": "minecraft:leather"
         },
-        "H": {
-            "item": "minecraft:hay_block"
+        "J": {
+            "item": "minecraft:lead"
         }
     },
     "result": {
