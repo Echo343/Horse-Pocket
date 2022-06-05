@@ -45,12 +45,4 @@ public class HorsePocket {
 	public HorsePocket() {
 		Registry.init();
 	}
-
-//    public static final CreativeModeTab TAB = new CreativeModeTab("blargsTab") {
-//        @Override
-//		@OnlyIn(Dist.CLIENT)
-//        public ItemStack makeIcon() {
-//            return new ItemStack(Blocks.SMITHING_TABLE);
-//        }
-//    };
 }

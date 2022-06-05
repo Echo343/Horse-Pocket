@@ -1,7 +1,5 @@
 package com.blargsworkshop.horsepocket.event;
 
-import com.blargsworkshop.horsepocket.common.text.Chat;
-import com.blargsworkshop.horsepocket.enums.Variants;
 import com.blargsworkshop.horsepocket.item.PocketItem;
 
 import net.minecraft.nbt.CompoundTag;
@@ -17,8 +15,8 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = "horsepocket")
 public class InteractionEventHandler {
 
-	private static final String MINECRAFT_HORSE = "minecraft:horse";
-	private static final String VARIANT = "Variant";
+//	private static final String MINECRAFT_HORSE = "minecraft:horse";
+//	private static final String VARIANT = "Variant";
 
 	@SubscribeEvent
 	public static void onInteractEntity(PlayerInteractEvent.EntityInteract event) {
@@ -46,16 +44,16 @@ public class InteractionEventHandler {
 						compound.putString(PocketItem.Tag.CUSTOM_NAME, entity.getCustomName().getString());
 					}
 
-					if (player.level.isClientSide) {
-						if (entity.hasCustomName()) {
-							Chat.addUnlocalizedChatMessage(player, "Stowed " + entity.getCustomName().getString());
-						} else if (entity.getType().getRegistryName().toString().equalsIgnoreCase(MINECRAFT_HORSE)) {
-							int variant = compound.getCompound(PocketItem.Tag.ENTITY_DATA).getInt(VARIANT);
-							Chat.addUnlocalizedChatMessage(player, "Stowed " + Variants.INSTANCE.getDescriptionByVariant(variant).toLowerCase());
-						} else {
-							Chat.addUnlocalizedChatMessage(player, "Stowed a " + entity.getType().getDescription().getString().toLowerCase());
-						}
-					}
+//					if (player.level.isClientSide) {
+//						if (entity.hasCustomName()) {
+//							Chat.addUnlocalizedChatMessage(player, "Stowed " + entity.getCustomName().getString());
+//						} else if (entity.getType().getRegistryName().toString().equalsIgnoreCase(MINECRAFT_HORSE)) {
+//							int variant = compound.getCompound(PocketItem.Tag.ENTITY_DATA).getInt(VARIANT);
+//							Chat.addUnlocalizedChatMessage(player, "Stowed " + Variants.INSTANCE.getDescriptionByVariant(variant).toLowerCase());
+//						} else {
+//							Chat.addUnlocalizedChatMessage(player, "Stowed a " + entity.getType().getDescription().getString().toLowerCase());
+//						}
+//					}
 
 					entity.remove(Entity.RemovalReason.UNLOADED_TO_CHUNK);
 					player.setItemInHand(event.getHand(), stack);

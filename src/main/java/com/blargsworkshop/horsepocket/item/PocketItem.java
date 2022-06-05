@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 
 import com.blargsworkshop.horsepocket.HorsePocket;
-import com.blargsworkshop.horsepocket.common.text.Chat;
 import com.blargsworkshop.horsepocket.enums.Variants;
 
 import net.minecraft.ChatFormatting;
@@ -17,6 +16,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -65,16 +65,16 @@ public class PocketItem extends Item {
 					context.getLevel().addFreshEntity(entity);
 					compound.putBoolean(Tag.HAS_ENTITY, false);
 
-					if (context.getPlayer().level.isClientSide) {
-						if (entity.hasCustomName()) {
-							Chat.addUnlocalizedChatMessage(context.getPlayer(), "Released " + entity.getCustomName().getString());
-						} else if (entity.getType().getRegistryName().toString().equalsIgnoreCase(MINECRAFT_HORSE)) {
-							int variant = compound.getCompound(Tag.ENTITY_DATA).getInt(VARIANT);
-							Chat.addUnlocalizedChatMessage(context.getPlayer(), "Released " + Variants.INSTANCE.getDescriptionByVariant(variant).toLowerCase());
-						} else {
-							Chat.addUnlocalizedChatMessage(context.getPlayer(), "Released a " + entity.getType().getRegistryName().getPath());
-						}
-					}
+//					if (context.getPlayer().level.isClientSide) {
+//						if (entity.hasCustomName()) {
+//							Chat.addUnlocalizedChatMessage(context.getPlayer(), "Released " + entity.getCustomName().getString());
+//						} else if (entity.getType().getRegistryName().toString().equalsIgnoreCase(MINECRAFT_HORSE)) {
+//							int variant = compound.getCompound(Tag.ENTITY_DATA).getInt(VARIANT);
+//							Chat.addUnlocalizedChatMessage(context.getPlayer(), "Released " + Variants.INSTANCE.getDescriptionByVariant(variant).toLowerCase());
+//						} else {
+//							Chat.addUnlocalizedChatMessage(context.getPlayer(), "Released a " + entity.getType().getRegistryName().getPath());
+//						}
+//					}
 
 					return InteractionResult.sidedSuccess(context.getPlayer().level.isClientSide);
 				}
@@ -91,12 +91,11 @@ public class PocketItem extends Item {
 			MutableComponent entityName = null;
 			
 			if (compound.getBoolean(Tag.HAS_CUSTOM_NAME)) {
-				entityName = new TextComponent(compound.getString(Tag.CUSTOM_NAME));
-				entityName.append(" (" + compound.getString(Tag.TYPE_NAME) + ")");
+				entityName = new TranslatableComponent("text.tooltip.custom_name_type_name", compound.getString(Tag.CUSTOM_NAME), compound.getString(Tag.TYPE_NAME));
 				
 			} else if (compound.getString(Tag.ENTITY_TYPE).equalsIgnoreCase(MINECRAFT_HORSE)) {
 				int variant = compound.getCompound(Tag.ENTITY_DATA).getInt(VARIANT);
-				entityName = new TextComponent(Variants.INSTANCE.getDescriptionByVariant(variant));
+				entityName = new TranslatableComponent(Variants.INSTANCE.getDescriptionByVariant(variant));
 				
 			} else {
 				entityName = new TextComponent(compound.getString(Tag.TYPE_NAME));
