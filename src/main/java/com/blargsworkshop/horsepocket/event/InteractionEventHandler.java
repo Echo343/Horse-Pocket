@@ -15,8 +15,6 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = "horsepocket")
 public class InteractionEventHandler {
 
-//	private static final String MINECRAFT_HORSE = "minecraft:horse";
-//	private static final String VARIANT = "Variant";
 
 	@SubscribeEvent
 	public static void onInteractEntity(PlayerInteractEvent.EntityInteract event) {
@@ -47,8 +45,8 @@ public class InteractionEventHandler {
 //					if (player.level.isClientSide) {
 //						if (entity.hasCustomName()) {
 //							Chat.addUnlocalizedChatMessage(player, "Stowed " + entity.getCustomName().getString());
-//						} else if (entity.getType().getRegistryName().toString().equalsIgnoreCase(MINECRAFT_HORSE)) {
-//							int variant = compound.getCompound(PocketItem.Tag.ENTITY_DATA).getInt(VARIANT);
+//						} else if (entity.getType().getRegistryName().toString().equalsIgnoreCase("minecraft:horse")) {
+//							int variant = compound.getCompound(PocketItem.Tag.ENTITY_DATA).getInt("Variant");
 //							Chat.addUnlocalizedChatMessage(player, "Stowed " + Variants.INSTANCE.getDescriptionByVariant(variant).toLowerCase());
 //						} else {
 //							Chat.addUnlocalizedChatMessage(player, "Stowed a " + entity.getType().getDescription().getString().toLowerCase());
