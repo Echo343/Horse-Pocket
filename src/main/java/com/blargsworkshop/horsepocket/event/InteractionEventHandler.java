@@ -15,6 +15,11 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = "horsepocket")
 public class InteractionEventHandler {
 
+	private static boolean isRiddenByPlayer(Entity entity) {
+		return entity.hasPassenger((passenger) -> {
+			return passenger instanceof Player;
+		});
+	}
 
 	@SubscribeEvent
 	public static void onInteractEntity(PlayerInteractEvent.EntityInteract event) {
@@ -26,7 +31,7 @@ public class InteractionEventHandler {
 			if (!compound.getBoolean(PocketItem.Tag.HAS_ENTITY)) {
 				Entity entity = event.getTarget();
 
-				if (entity instanceof Saddleable && ((Saddleable) entity).isSaddled() && entity.isAlive()) {
+				if (entity instanceof Saddleable && ((Saddleable) entity).isSaddled() && entity.isAlive() && !isRiddenByPlayer(entity)) {
 					Player player = event.getPlayer();
 					if (entity.isPassenger()) {
 						entity.stopRiding();
