@@ -10,6 +10,9 @@ import com.blargsworkshop.horsepocket.enums.Variants;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Position;
+import net.minecraft.core.PositionImpl;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -20,6 +23,8 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -27,7 +32,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
 public class PocketItem extends Item {
-
 
 	public static class Tag {
 		public static final String HAS_ENTITY = "has_entity";
@@ -50,18 +54,49 @@ public class PocketItem extends Item {
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
 		CompoundTag compound = context.getItemInHand().getOrCreateTag();
-		
+
 		if (compound.getBoolean(Tag.HAS_ENTITY)) {
 			Optional<EntityType<?>> optional = EntityType.byString(compound.getString(Tag.ENTITY_TYPE));
-			
+
 			if (optional.isPresent()) {
 				Entity entity = optional.get().create(context.getLevel());
-				
+
 				if (entity != null) {
 					entity.load(compound.getCompound(Tag.ENTITY_DATA));
-					// TODO top of block only?
 					BlockPos pos = context.getClickedPos().relative(context.getClickedFace());
-					entity.setPos(pos.getX() + 0.5, pos.getY() + 0.01, pos.getZ() + 0.5);
+
+					if (entity instanceof AbstractHorse) {
+						Position offsetHorsePos;
+						switch (context.getClickedFace()) {
+							case DOWN:
+								offsetHorsePos = new PositionImpl(pos.getX() + 0.5, pos.getY() - 0.90, pos.getZ() + 0.5);
+								break;
+							case EAST:
+								offsetHorsePos = new PositionImpl(pos.getX() + 1, pos.getY() + 0.01, pos.getZ() + 0.5);
+								break;
+							case NORTH:
+								offsetHorsePos = new PositionImpl(pos.getX() + 0.5, pos.getY() + 0.01, pos.getZ());
+								break;
+							case SOUTH:
+								offsetHorsePos = new PositionImpl(pos.getX() + 0.5, pos.getY() + 0.01, pos.getZ() + 1);
+								break;
+							case UP:
+								offsetHorsePos = new PositionImpl(pos.getX() + 0.5, pos.getY() + 0.01, pos.getZ() + 0.5);
+								break;
+							case WEST:
+								offsetHorsePos = new PositionImpl(pos.getX(), pos.getY() + 0.01, pos.getZ() + 0.5);
+								break;
+							default:
+								offsetHorsePos = null;
+						}
+						entity.setPos(offsetHorsePos.x(), offsetHorsePos.y(), offsetHorsePos.z());
+					} else {
+						if (entity instanceof Strider && context.getClickedFace() == Direction.DOWN) {
+							entity.setPos(pos.getX() + 0.5, pos.getY() - 0.8, pos.getZ() + 0.5);
+						} else {
+							entity.setPos(pos.getX() + 0.5, pos.getY() + 0.01, pos.getZ() + 0.5);
+						}
+					}
 					context.getLevel().addFreshEntity(entity);
 					compound.putBoolean(Tag.HAS_ENTITY, false);
 
@@ -86,21 +121,21 @@ public class PocketItem extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> components, TooltipFlag flag) {
 		CompoundTag compound = stack.getOrCreateTag();
-		
+
 		if (compound.getBoolean(Tag.HAS_ENTITY)) {
 			MutableComponent entityName = null;
-			
+
 			if (compound.getBoolean(Tag.HAS_CUSTOM_NAME)) {
 				entityName = new TranslatableComponent("text.tooltip.custom_name_type_name", compound.getString(Tag.CUSTOM_NAME), compound.getString(Tag.TYPE_NAME));
-				
+
 			} else if (compound.getString(Tag.ENTITY_TYPE).equalsIgnoreCase(MINECRAFT_HORSE)) {
 				int variant = compound.getCompound(Tag.ENTITY_DATA).getInt(VARIANT);
 				entityName = new TranslatableComponent(Variants.INSTANCE.getDescriptionByVariant(variant));
-				
+
 			} else {
 				entityName = new TextComponent(compound.getString(Tag.TYPE_NAME));
 			}
-			
+
 			// Adjust Color
 			switch (compound.getString(Tag.ENTITY_TYPE).toLowerCase()) {
 				case MINECRAFT_HORSE:
