@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "horsepocket:items/pocket"
+        "layer0": "horsepocket:item/pocket"
     },
     "overrides": [
         {
