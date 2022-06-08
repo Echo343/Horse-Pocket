@@ -6,9 +6,21 @@
     "overrides": [
         {
             "predicate": {
+                "horsepocket:stowed": 0.1
+            },
+            "model": "horsepocket:item/pig"
+        },
+		{
+            "predicate": {
+                "horsepocket:stowed": 0.2
+            },
+            "model": "horsepocket:item/strider"
+        },
+        {
+            "predicate": {
                 "horsepocket:stowed": 1
             },
-            "model": "horsepocket:item/pocket2"
+            "model": "horsepocket:item/horse"
         }
     ]
 }

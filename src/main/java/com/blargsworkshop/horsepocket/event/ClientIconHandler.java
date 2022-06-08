@@ -23,7 +23,14 @@ public class ClientIconHandler {
 				(stack, level, entity, seed) -> {
 					CompoundTag tag = stack.getOrCreateTag();
 					if (tag.getBoolean(PocketItem.Tag.HAS_ENTITY)) {
-						return 1F;
+						switch (tag.getString(PocketItem.Tag.ENTITY_TYPE).toLowerCase()) {
+							case "minecraft:pig":
+								return 0.1F;
+							case "minecraft:strider":
+								return 0.2F;
+							default:
+								return 1F;
+						}
 					}
 					return 0F;
 				}
