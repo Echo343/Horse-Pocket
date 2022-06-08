@@ -29,13 +29,13 @@ displayName="Horse Pocket" #mandatory
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="logo.png" #optional
 # A text field displayed in the mod UI
-credits="Echo343, albatros064, Sounds from Zapsplat.com, Images from game-icons.net & minecraft.fandom.com/wiki/Minecraft_Wiki" #optional
+credits="Echo343, Images from minecraft.fandom.com/wiki/Minecraft_Wiki" #optional
 # A text field displayed in the mod UI
 authors="Echo343" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-One of Blarg's inventions. Inspired by Viva La Dirt League.
-Blarg has also found a way to prevent a spawn from being set without confirmation.
+One of Blarg's inventions. Inspired by Viva La Dirt League on youtube.
+You can now stow your horse in your horse pocket.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.horsepocket]] #optional
