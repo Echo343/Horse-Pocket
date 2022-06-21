@@ -47,17 +47,6 @@ public class InteractionEventHandler {
 						compound.putString(PocketItem.Tag.CUSTOM_NAME, entity.getCustomName().getString());
 					}
 
-//					if (player.level.isClientSide) {
-//						if (entity.hasCustomName()) {
-//							Chat.addUnlocalizedChatMessage(player, "Stowed " + entity.getCustomName().getString());
-//						} else if (entity.getType().getRegistryName().toString().equalsIgnoreCase("minecraft:horse")) {
-//							int variant = compound.getCompound(PocketItem.Tag.ENTITY_DATA).getInt("Variant");
-//							Chat.addUnlocalizedChatMessage(player, "Stowed " + Variants.INSTANCE.getDescriptionByVariant(variant).toLowerCase());
-//						} else {
-//							Chat.addUnlocalizedChatMessage(player, "Stowed a " + entity.getType().getDescription().getString().toLowerCase());
-//						}
-//					}
-
 					entity.remove(Entity.RemovalReason.UNLOADED_TO_CHUNK);
 					player.setItemInHand(event.getHand(), stack);
 					event.setCancellationResult(InteractionResult.sidedSuccess(event.getPlayer().level.isClientSide));

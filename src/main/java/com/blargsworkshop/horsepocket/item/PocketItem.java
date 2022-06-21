@@ -100,17 +100,6 @@ public class PocketItem extends Item {
 					context.getLevel().addFreshEntity(entity);
 					compound.putBoolean(Tag.HAS_ENTITY, false);
 
-//					if (context.getPlayer().level.isClientSide) {
-//						if (entity.hasCustomName()) {
-//							Chat.addUnlocalizedChatMessage(context.getPlayer(), "Released " + entity.getCustomName().getString());
-//						} else if (entity.getType().getRegistryName().toString().equalsIgnoreCase(MINECRAFT_HORSE)) {
-//							int variant = compound.getCompound(Tag.ENTITY_DATA).getInt(VARIANT);
-//							Chat.addUnlocalizedChatMessage(context.getPlayer(), "Released " + Variants.INSTANCE.getDescriptionByVariant(variant).toLowerCase());
-//						} else {
-//							Chat.addUnlocalizedChatMessage(context.getPlayer(), "Released a " + entity.getType().getRegistryName().getPath());
-//						}
-//					}
-
 					return InteractionResult.sidedSuccess(context.getPlayer().level.isClientSide);
 				}
 			}
@@ -124,10 +113,16 @@ public class PocketItem extends Item {
 
 		if (compound.getBoolean(Tag.HAS_ENTITY)) {
 			MutableComponent entityName = null;
+			MutableComponent horseVariant = null;
 
 			if (compound.getBoolean(Tag.HAS_CUSTOM_NAME)) {
 				entityName = new TranslatableComponent("text.tooltip.custom_name_type_name", compound.getString(Tag.CUSTOM_NAME), compound.getString(Tag.TYPE_NAME));
-
+				
+				if (compound.getString(Tag.ENTITY_TYPE).equalsIgnoreCase(MINECRAFT_HORSE)) {
+					int variant = compound.getCompound(Tag.ENTITY_DATA).getInt(VARIANT);
+					horseVariant = new TranslatableComponent(Variants.INSTANCE.getDescriptionByVariant(variant));
+				}
+				
 			} else if (compound.getString(Tag.ENTITY_TYPE).equalsIgnoreCase(MINECRAFT_HORSE)) {
 				int variant = compound.getCompound(Tag.ENTITY_DATA).getInt(VARIANT);
 				entityName = new TranslatableComponent(Variants.INSTANCE.getDescriptionByVariant(variant));
@@ -136,10 +131,13 @@ public class PocketItem extends Item {
 				entityName = new TextComponent(compound.getString(Tag.TYPE_NAME));
 			}
 
-			// Adjust Color
+			// Adjust Color & add component
 			switch (compound.getString(Tag.ENTITY_TYPE).toLowerCase()) {
 				case MINECRAFT_HORSE:
 					components.add(entityName.withStyle(ChatFormatting.DARK_GREEN));
+					if (compound.getBoolean(Tag.HAS_CUSTOM_NAME)) {
+						components.add(horseVariant.withStyle(ChatFormatting.DARK_GREEN));
+					}
 					break;
 				case MINECRAFT_PIG:
 					// Pink
