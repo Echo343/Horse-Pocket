@@ -18,12 +18,13 @@ import net.minecraftforge.registries.RegistryObject;
 public class SoundManager {
 
 	/**
-	 * Plays a sound at the entity's position.
-	 * This must be called from both the client and the server.
+	 * Plays a sound at the entity's position. This must be called from both the
+	 * client and the server.
+	 *
 	 * @param entity
 	 * @param sound
 	 * @param volume relative to 1.0
-	 * @param pitch relative to 1.0
+	 * @param pitch  relative to 1.0
 	 */
 	public static void playSoundAtEntity(Entity entity, RegistryObject<SoundEvent> soundObject, float volume) {
 		soundObject.ifPresent((sound) -> {
@@ -32,8 +33,9 @@ public class SoundManager {
 	}
 
 	/**
-	 * Plays a sound at the entity's position.
-	 * This must be called from both the client and the server.
+	 * Plays a sound at the entity's position. This must be called from both the
+	 * client and the server.
+	 *
 	 * @param entity
 	 * @param sound
 	 */
@@ -42,8 +44,9 @@ public class SoundManager {
 	}
 
 	/**
-	 * Plays a sound at the entity's position.
-	 * Use this method when only calling from the server.
+	 * Plays a sound at the entity's position. Use this method when only calling
+	 * from the server.
+	 *
 	 * @param entity
 	 * @param sound
 	 */
@@ -53,23 +56,25 @@ public class SoundManager {
 				Player player = (Player) entity;
 				player.getCommandSenderWorld().playSound(null, new BlockPos(player.getX(), player.getY(), player.getZ()), sound, player.getSoundSource(), 1f, 1f);
 			});
-		}
-		else {
+		} else {
 			playSoundAtEntity(entity, soundObject);
 		}
 	}
 
 	/***
 	 * Plays sound at entity to all within range. Must be called from server only.
+	 *
 	 * @param player
 	 * @param soundIn
-	 * @param range normal is 16D
+	 * @param range   normal is 16D
 	 * @param volume
 	 */
 	public static void playSoundAtEntityWithRange(@Nonnull Player player, RegistryObject<SoundEvent> soundObject, double range, float volume) {
 		soundObject.ifPresent((soundIn) -> {
 			AtEntity event = ForgeEventFactory.onPlaySoundAtEntity(player, soundIn, player.getSoundSource(), volume, 1.0F);
-			if (event.isCanceled() || event.getSound() == null) return;
+			if (event.isCanceled() || event.getSound() == null) {
+				return;
+			}
 			soundIn = event.getSound();
 			SoundSource category = event.getSource();
 			float newVolume = event.getNewVolume();

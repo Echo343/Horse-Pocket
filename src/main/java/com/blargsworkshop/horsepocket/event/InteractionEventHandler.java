@@ -38,7 +38,7 @@ public class InteractionEventHandler {
 						entity.stopRiding();
 					}
 					entity.ejectPassengers();
-					
+
 					compound.putBoolean(PocketItem.Tag.HAS_ENTITY, true);
 					compound.putString(PocketItem.Tag.ENTITY_TYPE, ForgeRegistries.ENTITIES.getKey(entity.getType()).toString());
 					compound.put(PocketItem.Tag.ENTITY_DATA, entity.saveWithoutId(new CompoundTag()));

@@ -115,12 +115,12 @@ public class PocketItem extends Item {
 
 			if (compound.getBoolean(Tag.HAS_CUSTOM_NAME)) {
 				entityName = Component.translatable("text.tooltip.custom_name_type_name", compound.getString(Tag.CUSTOM_NAME), compound.getString(Tag.TYPE_NAME));
-				
+
 				if (compound.getString(Tag.ENTITY_TYPE).equalsIgnoreCase(MINECRAFT_HORSE)) {
 					int variant = compound.getCompound(Tag.ENTITY_DATA).getInt(VARIANT);
 					horseVariant = Component.translatable(Variants.INSTANCE.getDescriptionByVariant(variant));
 				}
-				
+
 			} else if (compound.getString(Tag.ENTITY_TYPE).equalsIgnoreCase(MINECRAFT_HORSE)) {
 				int variant = compound.getCompound(Tag.ENTITY_DATA).getInt(VARIANT);
 				entityName = Component.translatable(Variants.INSTANCE.getDescriptionByVariant(variant));
