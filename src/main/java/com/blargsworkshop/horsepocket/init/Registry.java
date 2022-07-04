@@ -3,6 +3,7 @@ package com.blargsworkshop.horsepocket.init;
 import com.blargsworkshop.horsepocket.HorsePocket;
 import com.blargsworkshop.horsepocket.item.PocketItem;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -24,6 +25,6 @@ public class Registry {
 
 	// Items
 	public static class Items {
-		public static final RegistryObject<Item> POCKET = RegistryObject.create(new ResourceLocation(Sleepstone.MOD_ID, "pocket"), ForgeRegistries.ITEMS);
+		public static final RegistryObject<Item> POCKET = RegistryObject.create(new ResourceLocation(HorsePocket.MOD_ID, "pocket"), ForgeRegistries.ITEMS);
 	}
 }

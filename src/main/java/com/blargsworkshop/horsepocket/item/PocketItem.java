@@ -18,8 +18,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -116,19 +114,19 @@ public class PocketItem extends Item {
 			MutableComponent horseVariant = null;
 
 			if (compound.getBoolean(Tag.HAS_CUSTOM_NAME)) {
-				entityName = new TranslatableComponent("text.tooltip.custom_name_type_name", compound.getString(Tag.CUSTOM_NAME), compound.getString(Tag.TYPE_NAME));
+				entityName = Component.translatable("text.tooltip.custom_name_type_name", compound.getString(Tag.CUSTOM_NAME), compound.getString(Tag.TYPE_NAME));
 				
 				if (compound.getString(Tag.ENTITY_TYPE).equalsIgnoreCase(MINECRAFT_HORSE)) {
 					int variant = compound.getCompound(Tag.ENTITY_DATA).getInt(VARIANT);
-					horseVariant = new TranslatableComponent(Variants.INSTANCE.getDescriptionByVariant(variant));
+					horseVariant = Component.translatable(Variants.INSTANCE.getDescriptionByVariant(variant));
 				}
 				
 			} else if (compound.getString(Tag.ENTITY_TYPE).equalsIgnoreCase(MINECRAFT_HORSE)) {
 				int variant = compound.getCompound(Tag.ENTITY_DATA).getInt(VARIANT);
-				entityName = new TranslatableComponent(Variants.INSTANCE.getDescriptionByVariant(variant));
+				entityName = Component.translatable(Variants.INSTANCE.getDescriptionByVariant(variant));
 
 			} else {
-				entityName = new TextComponent(compound.getString(Tag.TYPE_NAME));
+				entityName = Component.literal(compound.getString(Tag.TYPE_NAME));
 			}
 
 			// Adjust Color & add component

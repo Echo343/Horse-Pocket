@@ -18,7 +18,7 @@ public class ClientIconHandler {
 	@SubscribeEvent
 	public static void doClientStuff(final FMLClientSetupEvent event) {
 		ItemProperties.register(
-				Registry.Items.POCKET,
+				Registry.Items.POCKET.get(),
 				new ResourceLocation(HorsePocket.MOD_ID, "stowed"),
 				(stack, level, entity, seed) -> {
 					CompoundTag tag = stack.getOrCreateTag();

@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 
 @Mod.EventBusSubscriber(modid = "horsepocket")
 public class InteractionEventHandler {
@@ -39,7 +40,7 @@ public class InteractionEventHandler {
 					entity.ejectPassengers();
 					
 					compound.putBoolean(PocketItem.Tag.HAS_ENTITY, true);
-					compound.putString(PocketItem.Tag.ENTITY_TYPE, entity.getType().getRegistryName().toString());
+					compound.putString(PocketItem.Tag.ENTITY_TYPE, ForgeRegistries.ENTITIES.getKey(entity.getType()).toString());
 					compound.put(PocketItem.Tag.ENTITY_DATA, entity.saveWithoutId(new CompoundTag()));
 					compound.putString(PocketItem.Tag.TYPE_NAME, entity.getType().getDescription().getString());
 					compound.putBoolean(PocketItem.Tag.HAS_CUSTOM_NAME, entity.hasCustomName());
