@@ -33,14 +33,14 @@ public class InteractionEventHandler {
 				Entity entity = event.getTarget();
 
 				if (entity instanceof Saddleable && ((Saddleable) entity).isSaddled() && entity.isAlive() && !isRiddenByPlayer(entity)) {
-					Player player = event.getPlayer();
+					Player player = event.getEntity();
 					if (entity.isPassenger()) {
 						entity.stopRiding();
 					}
 					entity.ejectPassengers();
 
 					compound.putBoolean(PocketItem.Tag.HAS_ENTITY, true);
-					compound.putString(PocketItem.Tag.ENTITY_TYPE, ForgeRegistries.ENTITIES.getKey(entity.getType()).toString());
+					compound.putString(PocketItem.Tag.ENTITY_TYPE, ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString());
 					compound.put(PocketItem.Tag.ENTITY_DATA, entity.saveWithoutId(new CompoundTag()));
 					compound.putString(PocketItem.Tag.TYPE_NAME, entity.getType().getDescription().getString());
 					compound.putBoolean(PocketItem.Tag.HAS_CUSTOM_NAME, entity.hasCustomName());
@@ -50,7 +50,7 @@ public class InteractionEventHandler {
 
 					entity.remove(Entity.RemovalReason.UNLOADED_TO_CHUNK);
 					player.setItemInHand(event.getHand(), stack);
-					event.setCancellationResult(InteractionResult.sidedSuccess(event.getPlayer().level.isClientSide));
+					event.setCancellationResult(InteractionResult.sidedSuccess(event.getEntity().level.isClientSide));
 				}
 			}
 		}
